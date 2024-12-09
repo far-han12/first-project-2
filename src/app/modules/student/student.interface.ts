@@ -1,5 +1,7 @@
-import { Schema, model, connect } from 'mongoose';
-export type Guardian = {
+import { TStudent } from './student.interface';
+import { Schema, model, connect, Model } from 'mongoose';
+import studentSchema from './student.validation';
+export type TGuardian = {
   fatherName: string;
   fatherOccupation: string;
   fatherContact: string;
@@ -7,21 +9,22 @@ export type Guardian = {
   motherOccupation: string;
   motherContact: string;
 };
-export type UserName = {
+export type TUserName = {
   firstName: string;
   middleName: string;
   lastName: string;
 };
-export type LocalGuardian = {
+export type TLocalGuardian = {
   name: string;
   occupation: string;
   contactnumber: string;
   address: string;
 };
-export type Student = {
+export type TStudent = {
   id: string;
-  name: UserName;
-  gender: 'male' | 'female'; //union type literal
+  name: TUserName;
+  password:string;
+  gender: 'male' | 'female' | 'other'; //union type literal
   dateOfBirth?: string;
   contact: string;
   emergencyno: string;
@@ -30,8 +33,33 @@ export type Student = {
   permanentaddress: string;
   email: string;
   avatar?: string;
-  guardian: Guardian;
-  localguardian: LocalGuardian;
+  guardian: TGuardian;
+  localguardian: TLocalGuardian;
   profileImg?: string;
   isActive: 'active' | 'blocked';
+  isDeleted: boolean
 };
+
+
+
+
+
+
+
+
+
+
+
+
+
+// /for creating static
+export interface StudentModel extends Model<TStudent> {
+  isUserExist(id: string): Promise<TStudent | null>;
+
+}
+
+// for creating instance
+// export type StudentMethod = {
+//   isUserExist(id: string): Promise<TStudent | null>;
+// };
+// export type StudentModel = Model<TStudent, {}, StudentMethod>;
